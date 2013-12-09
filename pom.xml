@@ -19,6 +19,9 @@
         <!-- Java Melody -->
         <java-melody.version>1.37.0</java-melody.version>
 
+        <!-- Deployment directory -->
+        <deploy.socle-libs.dir>${osivia-portal-deploy-dir}/jbossas/server/production/lib</deploy.socle-libs.dir>
+
     </properties>
 
 
@@ -40,7 +43,7 @@
             <groupId>net.bull.javamelody</groupId>
             <artifactId>javamelody-core</artifactId>
             <version>${java-melody.version}</version>
-            <scope>provided</scope>
+            <scope>compile</scope>
         </dependency>
 
     </dependencies>
