@@ -11,7 +11,7 @@
     <properties>
 
         <!-- OSIVIA portal -->
-        <osivia-portal.version>3.0.2-SNAPSHOT</osivia-portal.version>
+        <osivia-portal.version>3.0.2</osivia-portal.version>
 
         <!-- Java Melody -->
         <java-melody.version>1.37.0</java-melody.version>

@@ -22,14 +22,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+
 
 /**
  * Filtre de servlet pour le monitoring.
  * C'est la classe de ce filtre qui doit être déclarée dans le fichier web.xml de la webapp.
  * 
- * Modif OSIVIA
+ * Modif OSIVIA (base java melody 1.0.37)
  * - suppression de la requete wrappee
  * - nettoyage des urls (/auth, /pagemarker)
+ * - initialisation de la réponse (type mime, encodage)
  * 
  * @author Emeric Vernat
  */
@@ -53,6 +58,8 @@ public class AdaptedMonitoringFilter implements Filter {
     private FilterContext filterContext;
     private FilterConfig filterConfig;
     private String monitoringUrl;
+    
+    protected static final Log logger = LogFactory.getLog(AdaptedMonitoringFilter.class);
 
     /**
      * Constructeur.
@@ -164,6 +171,7 @@ public class AdaptedMonitoringFilter implements Filter {
         final CounterServletResponseWrapper wrappedResponse = new CounterServletResponseWrapper(httpResponse);
 
         wrappedResponse.setCharacterEncoding("UTF-8");
+        wrappedResponse.setContentType("text/html;charset=UTF-8");        
         final long start = System.currentTimeMillis();
         final long startCpuTime = ThreadInformations.getCurrentThreadCpuTime();
         boolean systemError = false;
@@ -178,6 +186,7 @@ public class AdaptedMonitoringFilter implements Filter {
             httpRequest.setAttribute(CounterError.REQUEST_KEY, completeRequestName);
             CounterError.bindRequest(httpRequest);
             chain.doFilter(httpRequest, wrappedResponse);
+             
             wrappedResponse.flushBuffer();
         } catch (final Throwable t) { // NOPMD
             // on catche Throwable pour avoir tous les cas d'erreur système
