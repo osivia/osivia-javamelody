@@ -4,7 +4,7 @@
 
     <groupId>org.osivia.services</groupId>
     <artifactId>osivia-services-java-melody-integration</artifactId>
-    <version>1.1-snapshot</version>
+    <version>1.1-rc1</version>
     <packaging>jar</packaging>
     <name>Services OSIVIA - Java Melody integration</name>
 
@@ -91,7 +91,7 @@
 
 
     <scm>
-        <developerConnection>scm:svn:http://www.osivia.org/repos/osivia-services/java-melody-integration/trunk</developerConnection>
+        <developerConnection>scm:svn:http://www.osivia.org/repos/osivia-services/java-melody-integration/tags/1.1-rc1</developerConnection>
     </scm>
 
 
