@@ -1,0 +1,17 @@
+
+Version 1.1-RC1
+================
+11/09/2014
+
+Dependencies
+------------
+osivia-portal - 3.0.0
+
+Content
+------------
+[Bugfix] upgrade javamelody, too many error logs
+
+
+About
+================
+Adaptation of javamelody for monitoring servers 

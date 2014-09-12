@@ -4,17 +4,17 @@
 
     <groupId>org.osivia.services</groupId>
     <artifactId>osivia-services-java-melody-integration</artifactId>
-    <version>1.0-RC3-SNAPSHOT</version>
+    <version>1.1-snapshot</version>
     <packaging>jar</packaging>
     <name>Services OSIVIA - Java Melody integration</name>
 
     <properties>
 
         <!-- OSIVIA portal -->
-        <osivia-portal.version>3.0.2</osivia-portal.version>
+        <osivia-portal.version>3.3.0-rc1</osivia-portal.version>
 
         <!-- Java Melody -->
-        <java-melody.version>1.37.0</java-melody.version>
+        <java-melody.version>1.41.0</java-melody.version>
 
         <!-- Deployment directory -->
         <deploy.socle-libs.dir>${osivia-portal-deploy-dir}/jbossas/server/production/lib</deploy.socle-libs.dir>
