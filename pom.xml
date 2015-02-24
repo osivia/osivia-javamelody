@@ -14,7 +14,7 @@
         <osivia-portal.version>3.3.0</osivia-portal.version>
 
         <!-- Java Melody -->
-        <java-melody.version>1.41.0</java-melody.version>
+        <java-melody.version>1.47.0</java-melody.version>
 
         <!-- Deployment directory -->
         <deploy.socle-libs.dir>${osivia-portal-deploy-dir}/jbossas/server/production/lib</deploy.socle-libs.dir>

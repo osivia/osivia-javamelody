@@ -104,7 +104,8 @@ public class AdaptedMonitoringFilter implements Filter {
         LOG.debug("JavaMelody filter init started");
 
         this.filterContext = new FilterContext();
-        final Collector collector = this.filterContext.getCollector();
+ 		config.getServletContext().setAttribute(ReportServlet.FILTER_CONTEXT_KEY, filterContext);
+		final Collector collector = filterContext.getCollector();
         this.httpCounter = collector.getCounterByName(Counter.HTTP_COUNTER_NAME);
         this.errorCounter = collector.getCounterByName(Counter.ERROR_COUNTER_NAME);
 
@@ -130,6 +131,8 @@ public class AdaptedMonitoringFilter implements Filter {
                 this.filterContext.destroy();
             }
         } finally {
+            final String contextPath = Parameters.getContextPath(filterConfig.getServletContext());
+			CONTEXT_PATHS.remove(contextPath);
             // nettoyage avant le retrait de la webapp au cas où celui-ci ne suffise pas
             this.httpCounter = null;
             this.errorCounter = null;
@@ -193,6 +196,12 @@ public class AdaptedMonitoringFilter implements Filter {
             systemException = t;
             throwException(t);
         } finally {
+			if (httpCounter == null) {
+				// "the destroy method is only called once all threads within the filter's doFilter method have exited
+				// or after a timeout period has passed"
+				// si timeout, alors on évite ici une NPE (cf  issue 262)
+				return; // NOPMD
+			}
             try {
                 // Si la durée est négative (arrive bien que rarement en cas de synchronisation d'horloge système),
                 // alors on considère que la durée est 0.
@@ -318,26 +327,26 @@ public class AdaptedMonitoringFilter implements Filter {
         }
         final Collector collector = this.filterContext.getCollector();
         final MonitoringController monitoringController = new MonitoringController(collector, null);
-        monitoringController.executeActionIfNeeded(httpRequest);
-        // javaInformations doit être réinstanciée et doit être après executeActionIfNeeded
-        // pour avoir des informations à jour
-        final JavaInformations javaInformations;
-        if (MonitoringController.isJavaInformationsNeeded(httpRequest)) {
-            javaInformations = new JavaInformations(this.filterConfig.getServletContext(), true);
-        } else {
-            javaInformations = null;
-        }
-        monitoringController.doReport(httpRequest, httpResponse, Collections.singletonList(javaInformations));
+       		monitoringController.doActionIfNeededAndReport(httpRequest, httpResponse,
+				filterConfig.getServletContext());
 
         if ("stop".equalsIgnoreCase(httpRequest.getParameter(COLLECTOR_PARAMETER))) {
-            // on a été appelé par un serveur de collecte qui fera l'aggrégation dans le temps,
-            // le stockage et les courbes, donc on arrête le timer s'il est démarré
-            // et on vide les stats pour que le serveur de collecte ne récupère que les deltas
-            if (this.filterContext.getTimer() != null) {
-                this.filterContext.getTimer().cancel();
-            }
-            collector.stop();
-        }
+			// on a été appelé par un serveur de collecte qui fera l'aggrégation dans le temps,
+			// le stockage et les courbes, donc on arrête le timer s'il est démarré
+			// et on vide les stats pour que le serveur de collecte ne récupère que les deltas
+			for (final Counter counter : collector.getCounters()) {
+				counter.clear();
+			}
+
+			if (!collector.isStopped()) {
+				LOG.debug("Stopping the javamelody thread in this webapp, because a collector server from "
+						+ httpRequest.getRemoteAddr() + " wants to collect the data itself");
+				if (filterContext.getTimer() != null) {
+					filterContext.getTimer().cancel();
+				}
+				collector.stop();
+			}
+		}
     }
 
     private static String getCompleteRequestName(HttpServletRequest httpRequest, boolean includeQueryString) {
