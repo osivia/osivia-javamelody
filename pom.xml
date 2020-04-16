@@ -14,7 +14,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <!-- OSIVIA portal -->
-        <osivia-portal.version>4.7-SNAPSHOT</osivia-portal.version>
+        <osivia-portal.version>4.7.25.2-jdk7</osivia-portal.version>
 
         <!-- Java Melody -->
         <java-melody.version>1.82.0</java-melody.version>
