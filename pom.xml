@@ -71,8 +71,7 @@
 
     <scm>
         <url>https://github.com/osivia/osivia-javamelody</url>
-        <connection>scm:git:ssh://git@github.com:osivia/osivia-javamelody.git</connection>
-        <developerConnection>scm:git:ssh://git@github.com:osivia/osivia-javamelody.git</developerConnection>
+        <developerConnection>scm:git:git@github.com:osivia/osivia-javamelody.git</developerConnection>
         <tag>HEAD</tag>
     </scm>
 
