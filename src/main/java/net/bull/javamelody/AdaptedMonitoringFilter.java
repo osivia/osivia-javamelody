@@ -543,7 +543,7 @@ public class AdaptedMonitoringFilter implements Filter {
 
     /**
      * Asynchronously calls the optional collect server to register this application's node to be monitored.
-     * @param applicationName Name of the application in the collect server:<br/>
+     * @param applicationName Name of the application in the collect server:
      *     if it already exists the node will be added with the other nodes, if null name will be "contextPath_hostname".
      * @param collectServerUrl Url of the collect server,
      *     for example http://11.22.33.44:8080
